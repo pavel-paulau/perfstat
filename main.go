@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"strings"
@@ -36,20 +37,31 @@ func printValues() {
 }
 
 func main() {
-	_, y, err := terminal.GetSize(0)
-	if err != nil {
-		log.Fatalln(err)
+	cpu := flag.Bool("cpu", false, "enable CPU stats")
+	mem := flag.Bool("mem", false, "enable memory stats")
+	flag.Parse()
+
+	active_plugins := []plugins.Plugin{}
+	if *cpu == true {
+		active_plugins = append(active_plugins, plugins.NewCPU())
+	}
+	if *mem == true {
+		active_plugins = append(active_plugins, plugins.NewMem())
 	}
 
-	active_plugins := []plugins.Plugin{
-		plugins.NewCPU(),
-		plugins.NewMem(),
+	if len(active_plugins) == 0 {
+		log.Fatalln("Please specify at least one plugin")
 	}
 
 	for _, plugin := range active_plugins {
 		header = append(header, plugin.GetColumns()...)
 	}
 	printHeader()
+
+	_, y, err := terminal.GetSize(0)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	iterations := 1
 	for {
