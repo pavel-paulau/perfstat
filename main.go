@@ -38,6 +38,9 @@ func main() {
 	cpu := flag.Bool("cpu", false, "enable CPU stats")
 	mem := flag.Bool("mem", false, "enable memory stats")
 	interval := flag.Int("interval", 1, "sampling interval in seconds")
+	perfkeeper := flag.String("perfkeerper", "127.0.0.1:8080", "optional perfkeeper host:port")
+	snapshot := flag.String("snapshot", "", "name of perfkeeper snapshot")
+	source := flag.String("source", "", "name of perfkeeper snapshot")
 	flag.Parse()
 
 	active_plugins := []plugins.Plugin{}
@@ -47,9 +50,15 @@ func main() {
 	if *mem == true {
 		active_plugins = append(active_plugins, plugins.NewMem())
 	}
-
 	if len(active_plugins) == 0 {
 		log.Fatalln("Please specify at least one plugin")
+	}
+
+	var keeper *Keeper
+	if *snapshot != "" && *source != "" {
+		keeper = NewKeeper(*perfkeeper, *snapshot, *source)
+	} else {
+		keeper = nil
 	}
 
 	for _, plugin := range active_plugins {
@@ -66,6 +75,9 @@ func main() {
 	for {
 		for _, plugin := range active_plugins {
 			values = append(values, plugin.Extract()...)
+		}
+		if keeper != nil {
+			go keeper.Store(header, values)
 		}
 		printValues()
 
