@@ -15,8 +15,6 @@ import (
 var header []string
 var values []float64
 
-var INTERVAL = 1 * time.Second
-
 func printHeader() {
 	hr := 0
 	for _, column := range header {
@@ -39,6 +37,7 @@ func printValues() {
 func main() {
 	cpu := flag.Bool("cpu", false, "enable CPU stats")
 	mem := flag.Bool("mem", false, "enable memory stats")
+	interval := flag.Int("interval", 1, "sampling interval in seconds")
 	flag.Parse()
 
 	active_plugins := []plugins.Plugin{}
@@ -75,6 +74,6 @@ func main() {
 			printHeader()
 			iterations = 1
 		}
-		time.Sleep(INTERVAL)
+		time.Sleep(time.Duration(*interval) * time.Second)
 	}
 }
