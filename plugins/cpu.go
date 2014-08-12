@@ -29,6 +29,10 @@ func NewCPU() *CPU {
 	}
 }
 
+func (c *CPU) GetColumns() []string {
+	return c.Columns
+}
+
 func (c *CPU) Extract() (results []float64) {
 	file, err := os.Open("/proc/stat")
 	if err != nil {

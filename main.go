@@ -37,13 +37,21 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	plugin := plugins.NewCPU()
-	header = append(header, plugin.Columns...)
+	active_plugins := []plugins.Plugin{
+		plugins.NewCPU(),
+		plugins.NewMem(),
+	}
+
+	for _, plugin := range active_plugins {
+		header = append(header, plugin.GetColumns()...)
+	}
 	printHeader()
 
 	iterations := 1
 	for {
-		values = append(values, plugin.Extract()...)
+		for _, plugin := range active_plugins {
+			values = append(values, plugin.Extract()...)
+		}
 		printValues()
 
 		iterations += 1
