@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"code.google.com/p/go.crypto/ssh/terminal"
@@ -16,10 +17,13 @@ var values []float64
 var INTERVAL = 1 * time.Second
 
 func printHeader() {
+	hr := 0
 	for _, column := range header {
 		fmt.Printf("%s ", column)
+		hr += len(column) + 1
 	}
 	fmt.Println()
+	fmt.Println(strings.Repeat("-", hr-1))
 }
 
 func printValues() {
@@ -55,7 +59,7 @@ func main() {
 		printValues()
 
 		iterations += 1
-		if iterations == y {
+		if iterations == y-1 {
 			printHeader()
 			iterations = 1
 		}
