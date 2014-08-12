@@ -16,11 +16,11 @@ type CPU struct {
 
 func NewCPU() *CPU {
 	columns := []string{
-		"cpu_user",
-		"cpu_nice",
-		"cpu_sys",
-		"cpu_idle",
-		"cpu_iowait",
+		"cpu_user",   // Time spent in user mode.
+		"cpu_nice",   // Time spent in user mode with low priority (nice).
+		"cpu_sys",    // Time spent in system mode.
+		"cpu_idle",   // Time spent in the idle task.
+		"cpu_iowait", // Time waiting for I/O to complete.
 	}
 
 	return &CPU{

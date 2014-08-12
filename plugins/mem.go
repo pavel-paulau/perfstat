@@ -15,10 +15,10 @@ type Mem struct {
 
 func NewMem() *Mem {
 	columns := []string{
-		"mem_used",
-		"mem_free",
-		"mem_buff",
-		"mem_cache",
+		"mem_used",  // Total RAM in use (doesn't include buffers and cache).
+		"mem_free",  // Amount of free RAM.
+		"mem_buff",  // Relatively temporary storage for raw disk blocks.
+		"mem_cache", // In-memory cache for files read from the disk.
 	}
 
 	return &Mem{
