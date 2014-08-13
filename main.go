@@ -37,10 +37,14 @@ func printValues() {
 func main() {
 	cpu := flag.Bool("cpu", false, "enable CPU stats")
 	mem := flag.Bool("mem", false, "enable memory stats")
+
 	interval := flag.Int("interval", 1, "sampling interval in seconds")
+
+	quiet := flag.Bool("quiet", false, "disable reporting to stdout")
 	perfkeeper := flag.String("perfkeerper", "127.0.0.1:8080", "optional perfkeeper host:port")
 	snapshot := flag.String("snapshot", "", "name of perfkeeper snapshot")
 	source := flag.String("source", "", "name of perfkeeper snapshot")
+
 	flag.Parse()
 
 	active_plugins := []plugins.Plugin{}
@@ -64,7 +68,9 @@ func main() {
 	for _, plugin := range active_plugins {
 		header = append(header, plugin.GetColumns()...)
 	}
-	printHeader()
+	if !*quiet {
+		printHeader()
+	}
 
 	_, y, err := terminal.GetSize(0)
 	if err != nil {
@@ -79,11 +85,15 @@ func main() {
 		if keeper != nil {
 			go keeper.Store(header, values)
 		}
-		printValues()
+		if !*quiet {
+			printValues()
+		}
 
 		iterations += 1
 		if iterations == y-1 {
-			printHeader()
+			if !*quiet {
+				printHeader()
+			}
 			iterations = 1
 		}
 		time.Sleep(time.Duration(*interval) * time.Second)
