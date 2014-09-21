@@ -15,10 +15,10 @@ type Mem struct {
 
 func NewMem() *Mem {
 	columns := []string{
-		"mem_used",  // Total RAM in use (doesn't include buffers and cache).
-		"mem_free",  // Amount of free RAM.
-		"mem_buff",  // Relatively temporary storage for raw disk blocks.
-		"mem_cache", // In-memory cache for files read from the disk.
+		"mem_used",  // Total RAM in use (doesn't include buffers and cache), Mbytes.
+		"mem_free",  // Amount of free RAM, Mbytes.
+		"mem_buff",  // Relatively temporary storage for raw disk blocks, Mbytes.
+		"mem_cache", // In-memory cache for files read from the disk, Mbytes.
 	}
 
 	return &Mem{
@@ -46,7 +46,7 @@ func (m *Mem) Extract() (results []float64) {
 		}
 
 		value, err := strconv.ParseFloat(strings.Fields(line)[1], 32)
-		value = math.Floor(value / 1024)
+		value = math.Floor(value / 1024) // KB -> MB
 		if err != nil {
 			log.Println(err)
 		}
