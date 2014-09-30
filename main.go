@@ -27,8 +27,8 @@ func printHeader() {
 
 func printValues() {
 	for i, column := range header {
-		fmt_str := fmt.Sprintf("%%%dv ", len(column))
-		fmt.Printf(fmt_str, values[i])
+		fmtStr := fmt.Sprintf("%%%dv ", len(column))
+		fmt.Printf(fmtStr, values[i])
 	}
 	fmt.Println()
 	values = []float64{}
@@ -47,14 +47,14 @@ func main() {
 
 	flag.Parse()
 
-	active_plugins := []plugins.Plugin{}
+	activePlugins := []plugins.Plugin{}
 	if *cpu == true {
-		active_plugins = append(active_plugins, plugins.NewCPU())
+		activePlugins = append(activePlugins, plugins.NewCPU())
 	}
 	if *mem == true {
-		active_plugins = append(active_plugins, plugins.NewMem())
+		activePlugins = append(activePlugins, plugins.NewMem())
 	}
-	if len(active_plugins) == 0 {
+	if len(activePlugins) == 0 {
 		log.Fatalln("Please specify at least one plugin")
 	}
 
@@ -65,7 +65,7 @@ func main() {
 		keeper = nil
 	}
 
-	for _, plugin := range active_plugins {
+	for _, plugin := range activePlugins {
 		header = append(header, plugin.GetColumns()...)
 	}
 	if !*quiet {
@@ -79,7 +79,7 @@ func main() {
 
 	iterations := 1
 	for {
-		for _, plugin := range active_plugins {
+		for _, plugin := range activePlugins {
 			values = append(values, plugin.Extract()...)
 		}
 		if keeper != nil {
@@ -89,7 +89,7 @@ func main() {
 			printValues()
 		}
 
-		iterations += 1
+		iterations ++
 		if iterations == y-1 {
 			if !*quiet {
 				printHeader()
