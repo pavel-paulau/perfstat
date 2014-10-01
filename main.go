@@ -58,9 +58,9 @@ func main() {
 		log.Fatalln("Please specify at least one plugin")
 	}
 
-	var keeper *Keeper
+	var keeper *keeper
 	if *snapshot != "" && *source != "" {
-		keeper = NewKeeper(*perfkeeper, *snapshot, *source)
+		keeper = newKeeper(*perfkeeper, *snapshot, *source)
 	} else {
 		keeper = nil
 	}
@@ -83,13 +83,13 @@ func main() {
 			values = append(values, plugin.Extract()...)
 		}
 		if keeper != nil {
-			go keeper.Store(header, values)
+			go keeper.store(header, values)
 		}
 		if !*quiet {
 			printValues()
 		}
 
-		iterations ++
+		iterations++
 		if iterations == y-1 {
 			if !*quiet {
 				printHeader()

@@ -9,19 +9,19 @@ import (
 	"net/http"
 )
 
-type Keeper struct {
+type keeper struct {
 	client *http.Client
 	uri    string
 }
 
-func NewKeeper(host, snapshot, source string) *Keeper {
-	return &Keeper{
+func newKeeper(host, snapshot, source string) *keeper {
+	return &keeper{
 		client: &http.Client{},
 		uri:    fmt.Sprintf("http://%s/%s/%s", host, snapshot, source),
 	}
 }
 
-func (k *Keeper) Store(header []string, values []float64) {
+func (k *keeper) store(header []string, values []float64) {
 	sample := map[string]float64{}
 
 	for i, metric := range header {
