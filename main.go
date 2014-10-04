@@ -72,9 +72,9 @@ func main() {
 		printHeader()
 	}
 
-	_, y, err := terminal.GetSize(0)
+	_, terminalHeight, err := terminal.GetSize(0)
 	if err != nil {
-		log.Fatalln(err)
+		terminalHeight = -1 // Detached terminal
 	}
 
 	iterations := 1
@@ -90,7 +90,7 @@ func main() {
 		}
 
 		iterations++
-		if iterations == y-1 {
+		if iterations == terminalHeight-1 {
 			if !*quiet {
 				printHeader()
 			}
