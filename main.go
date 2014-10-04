@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
+	"os"
 	"strings"
 	"time"
 
@@ -55,7 +55,8 @@ func main() {
 		activePlugins = append(activePlugins, plugins.NewMem())
 	}
 	if len(activePlugins) == 0 {
-		log.Fatalln("Please specify at least one plugin")
+		fmt.Println("Please specify at least one plugin")
+		os.Exit(1)
 	}
 
 	var keeper *keeper
