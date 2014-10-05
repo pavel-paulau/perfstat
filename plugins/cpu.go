@@ -48,7 +48,7 @@ func (c *CPU) Extract() (results []float64) {
 	stats := strings.Fields(line)[1:] // omit "cpu" column
 
 	total := float64(0)
-	for i, _ := range c.Columns {
+	for i := range c.Columns {
 		value, err := strconv.ParseFloat(stats[i], 32)
 		if err != nil {
 			log.Println(err)
@@ -58,9 +58,9 @@ func (c *CPU) Extract() (results []float64) {
 	}
 	c.current = append(c.current, total)
 
-	total_time := c.current[len(c.current)-1] - c.previous[len(c.previous)-1]
-	for i, _ := range c.Columns {
-		results = append(results, math.Floor(100*(c.current[i]-c.previous[i])/total_time+0.5))
+	totalTime := c.current[len(c.current)-1] - c.previous[len(c.previous)-1]
+	for i := range c.Columns {
+		results = append(results, math.Floor(100*(c.current[i]-c.previous[i])/totalTime+0.5))
 	}
 	c.previous = c.current
 	c.current = []float64{}
