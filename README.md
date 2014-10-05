@@ -1,6 +1,8 @@
 perfstat
 ========
 
+[![GoDoc](https://godoc.org/github.com/pavel-paulau/perfstat?status.svg)](https://godoc.org/github.com/pavel-paulau/perfstat)
+
 **perfstat** is a plugable collector of miscellaneous stats. It works similar to [dstat](https://github.com/dagwieers/dstat) but distributed as a binary executable and also introduces more flexible plugin development.
 
 Most importantly it allows to asynchronously store samples in [perfkeeper](https://github.com/pavel-paulau/perfkeeper)
