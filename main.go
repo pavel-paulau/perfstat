@@ -35,7 +35,7 @@ func printValues() {
 }
 
 func main() {
-	cpu := flag.Bool("cpu", false, "enable CPU stats")
+	cpu := flag.Bool("cpu", false, "enable CPU stats (Irix mode)")
 	mem := flag.Bool("mem", false, "enable memory stats")
 
 	interval := flag.Int("interval", 1, "sampling interval in seconds")

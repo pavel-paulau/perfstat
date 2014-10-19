@@ -5,13 +5,15 @@ import (
 	"log"
 	"math"
 	"os"
+	"runtime"
 	"strconv"
 	"strings"
 )
 
 type CPU struct {
-	previous, current []float64
 	Columns           []string
+	nproc             float64
+	previous, current []float64
 }
 
 func NewCPU() *CPU {
@@ -24,8 +26,9 @@ func NewCPU() *CPU {
 	}
 
 	return &CPU{
-		previous: make([]float64, len(columns)+1),
 		Columns:  columns,
+		nproc:    float64(runtime.NumCPU()),
+		previous: make([]float64, len(columns)+1),
 	}
 }
 
@@ -60,7 +63,7 @@ func (c *CPU) Extract() (results []float64) {
 
 	totalTime := c.current[len(c.current)-1] - c.previous[len(c.previous)-1]
 	for i := range c.Columns {
-		results = append(results, math.Floor(100*(c.current[i]-c.previous[i])/totalTime+0.5))
+		results = append(results, math.Floor(c.nproc*100*(c.current[i]-c.previous[i])/totalTime+0.5))
 	}
 	c.previous = c.current
 	c.current = []float64{}
