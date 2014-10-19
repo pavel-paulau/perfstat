@@ -41,7 +41,7 @@ func main() {
 	interval := flag.Int("interval", 1, "sampling interval in seconds")
 
 	quiet := flag.Bool("quiet", false, "disable reporting to stdout")
-	perfkeeper := flag.String("perfkeerper", "127.0.0.1:8080", "optional perfkeeper host:port")
+	perfkeeper := flag.String("perfkeeper", "127.0.0.1:8080", "optional perfkeeper host:port")
 	snapshot := flag.String("snapshot", "", "name of perfkeeper snapshot")
 	source := flag.String("source", "", "name of perfkeeper snapshot")
 
