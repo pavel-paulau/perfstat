@@ -30,17 +30,20 @@ func (k *keeper) store(header []string, values []float64) {
 	b, err := json.Marshal(sample)
 	if err != nil {
 		log.Printf("%v", err)
+		return
 	}
 	j := bytes.NewReader(b)
 
 	req, err := http.NewRequest("POST", k.uri, j)
 	if err != nil {
 		log.Printf("%v", err)
+		return
 	}
 
 	resp, err := k.client.Do(req)
 	if err != nil {
 		log.Printf("%v", err)
+		return
 	}
 	defer resp.Body.Close()
 	ioutil.ReadAll(resp.Body)
