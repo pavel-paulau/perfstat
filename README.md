@@ -10,21 +10,22 @@ Most importantly it allows to asynchronously store samples in [perfkeeper](https
 Installation and usage
 ----------------------
 
-Get [Go](http://golang.org/doc/install) and then get perfstat:
+Download the latest executable file at [Releases](https://github.com/pavel-paulau/perfstat/releases) page.
+
+Alternatively get [Go](http://golang.org/doc/install) and then get perfstat:
 
     $ go get github.com/pavel-paulau/perfstat
 
 Now let's sample CPU usage:
 
 	> perfstat -cpu
-	cpu_user cpu_nice cpu_sys cpu_idle cpu_iowait 
-	---------------------------------------------
-	      11        0       6       83          0 
-	      43        0      11       46          0 
-	      36        0      12       52          0 
-	      16        0       7       77          0 
-	       9        0       5       86          0 
-	      10        0       6       84          0
+	cpu_user cpu_sys cpu_idle cpu_iowait 
+	------------------------------------
+	     127       9      264          0 
+	     105       4      291          0 
+	     105       3      292          0 
+	     108       1      291          0 
+	     108       4      288          0 
 
 How about storing memory stats in perfkeeper?
 
