@@ -16,7 +16,6 @@ type CPU struct {
 	previous, current []float64
 }
 
-// NewCPU initialize CPU plugin
 func NewCPU() *CPU {
 	columns := []string{
 		"cpu_user",   // Time spent in user mode.
@@ -36,15 +35,20 @@ func (c *CPU) GetColumns() []string {
 	return c.Columns
 }
 
-// Extract measures CPU utilization based on kernel/system statistics:
-//	1. Take the first line of /proc/stat, e.g.:
-//		cpu  1198438 862 391327 16130978 10149 53 14464 0 0 0)
-//	2. Take the following values:
-//		[1] user
-//		[3] system
-//		[4] idle
-//		[5] iowait
-// See `man proc` for details.
+// Extract CPU utilization based on kernel/system statistics.
+//
+// 1. Take the first line of /proc/stat, e.g.:
+//
+//	cpu  1198438 862 391327 16130978 10149 53 14464 0 0 0)
+//
+// 2. Take the following values for the array:
+//
+//  [1] user
+//	[3] system
+//	[4] idle
+//	[5] iowait
+//
+// See "man proc" for details.
 func (c *CPU) Extract() (results []float64) {
 	file, err := os.Open("/proc/stat")
 	if err != nil {
