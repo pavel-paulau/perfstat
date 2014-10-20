@@ -13,6 +13,7 @@ type Mem struct {
 	Columns []string
 }
 
+// NewMem initialize Mem plugin
 func NewMem() *Mem {
 	columns := []string{
 		"mem_used",  // Total RAM in use (doesn't include buffers and cache), Mbytes.
@@ -30,10 +31,21 @@ func (m *Mem) GetColumns() []string {
 	return m.Columns
 }
 
+// Extract measures RAM usage based kernel/system statistics:
+//	1. Read 4 first lines from /proc/meminfo, e.g.:
+//		MemTotal:        7628544 kB
+//		MemFree:         4038912 kB
+//		Buffers:          289732 kB
+//		Cached:          1851184 kB
+//	2. Split required fields.
+//	3. Convert all values to MBytes.
+//
+// See `man proc` for details.
 func (m *Mem) Extract() (results []float64) {
 	file, err := os.Open("/proc/meminfo")
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return make([]float64, len(m.Columns))
 	}
 	defer file.Close()
 
@@ -43,12 +55,14 @@ func (m *Mem) Extract() (results []float64) {
 		line, err := reader.ReadString('\n')
 		if err != nil {
 			log.Println(err)
+			return make([]float64, len(m.Columns))
 		}
 
 		value, err := strconv.ParseFloat(strings.Fields(line)[1], 32)
 		value = math.Floor(value / 1024) // KB -> MB
 		if err != nil {
 			log.Println(err)
+			return make([]float64, len(m.Columns))
 		}
 		results = append(results, value)
 	}
