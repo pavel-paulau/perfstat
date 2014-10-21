@@ -10,7 +10,7 @@ Most importantly it allows to asynchronously store samples in [perfkeeper](https
 Installation and usage
 ----------------------
 
-Download the latest executable file at [Releases](https://github.com/pavel-paulau/perfstat/releases) page.
+You can find the latest executable file on [Releases](https://github.com/pavel-paulau/perfstat/releases) page.
 
 Alternatively get [Go](http://golang.org/doc/install) and then get perfstat:
 
